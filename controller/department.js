@@ -33,6 +33,7 @@ exports.selectDepartment = async (req, res) => {
 exports.getallDepartment = async (req,res) => {
     try {
         const department = await departmentModel.find()
+        console.log("Departments found in DB:", department);
 
         res.status(200).json({
             message: `All department found and the total is: ${department.length}`,

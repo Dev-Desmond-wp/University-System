@@ -3,41 +3,41 @@ const departmentModel = require('../models/department')
 
 exports.selectCourse = async (req, res) => {
     try {
-        const { departmentId } = req.params
-        const { courseCode, title, creditUnits } = req.body
+        const { departmentId } = req.params;
+        const { courseCode, title, creditUnits } = req.body;
 
-        const course = await departmentModel.findById(departmentId);
-        if(!course) {
+        const DEPART = await departmentModel.findById(departmentId);
+
+        if (!DEPART) {
             return res.status(400).json({
-                message: 'The course you selected does not exists'
-            })
+                message: 'The department you selected does not exists'
+            });
         }
 
-        const data = {
+        const newcourse = new courseModel({
             courseCode,
             title,
             creditUnits,
             departmentId
-        }
+        });
 
-        const newcourse = new courseModel(data)
-        
-        course.courses.push(newcourse._id)
+        DEPART.courses.push(newcourse._id);
 
-        await newcourse.save()
-        await course.save()
+        await newcourse.save();
+        await DEPART.save();
 
-        res.status(201).json({
+        return res.status(201).json({
             message: 'Course selected successfully',
             data: newcourse
-        })
+        });
 
     } catch (error) {
-        res.status(500).json({
+        return res.status(500).json({
             message: error.message
-        })
+        });
     }
-}
+};
+
 
 exports.getallCourses = async (req,res) => {
     try {
@@ -58,7 +58,7 @@ exports.getallCourses = async (req,res) => {
 exports.getoneCourse = async (req, res) => {
     try {
         const { id } = req.params
-        const course = await courseModel.findById(id).populate(departmentId);
+        const course = await courseModel.findById(id).populate('departmentId');
 
         if(!course) {
             return res.status(404).json({

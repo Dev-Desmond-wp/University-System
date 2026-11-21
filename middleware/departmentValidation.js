@@ -2,10 +2,10 @@ const Joi = require('joi');
 
 exports.validateDepartment = (req, res, next) => {
     const schema = Joi.object({
-      name: Joi.string().min(4).max(50).trim().required().messages({
+      departmentName: Joi.string().min(2).max(50).trim().required().messages({
         'string.base': 'Department name must be text',
         'string.empty': 'Department name cannot be empty',
-        'string.min': 'Department name must be at least  4 characters long',
+        'string.min': 'Department name must be at least  2 characters long',
         'any.required': 'Department name is required'
       }),
       faculty: Joi.string().min(3).max(50).trim().required().messages({
